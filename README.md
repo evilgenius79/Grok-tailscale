@@ -108,7 +108,13 @@ src/lib/mesh/          Types, lab fleet, watchdog, Tailscale proxy, store
 
 The lab fleet and the finding rules are the source of truth for what the rehearsal shows. Live devices are normalized from the [Tailscale API](https://tailscale.com/kb/1101/api) and then run through the same watchdog.
 
-## What this is not
+## Android
+
+The same dashboard can be installed on a phone without a Meshwarden server. Lab mode is inside the app and works with no network. Live mode calls `api.tailscale.com` from the phone. The credential stays in memory for that session and is not written to disk.
+
+It is not a Play Store app, and it is not the Tailscale VPN client. Android will warn that the package came from outside the store. Install only a copy you trust. If a later build is signed with a different key, uninstall this one before installing the new one.
+
+The installable package is produced from `android/` after `npm run build:android`. It is not committed here.
 
 - Not a coordination server, subnet router, or exit node.
 - Not a source of live host CPU, memory, or bandwidth. Those series exist so the lab inspector is worth looking at.

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { Button, ConfirmDialog, Field, inputClass } from "./ui";
+import { isPhoneApp } from "@/lib/mesh/bridge";
 import { useMesh } from "@/lib/mesh/store";
 
 export function ConnectView() {
@@ -36,8 +37,9 @@ export function ConnectView() {
         <div>
           <h2 className="text-xl font-semibold text-balance">Link</h2>
           <p className="text-sm text-pretty text-muted">
-            Watch the fictional lab, or hand Meshwarden a credential for a real tailnet. The credential is not written
-            to disk, a database, or browser storage.
+            {isPhoneApp()
+              ? "Watch the fictional lab, or hand Meshwarden a credential for a real tailnet. This phone app calls Tailscale itself. The credential stays in memory and is not sent to a Meshwarden server."
+              : "Watch the fictional lab, or hand Meshwarden a credential for a real tailnet. The credential is not written to disk, a database, or browser storage."}
           </p>
         </div>
 

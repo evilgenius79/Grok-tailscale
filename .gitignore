@@ -3,3 +3,12 @@ node_modules/
 .github_repo
 .env
 .env.*
+.android-sdk/
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/app/src/main/assets/www/
+*.jks
+artifacts/*.apk
+

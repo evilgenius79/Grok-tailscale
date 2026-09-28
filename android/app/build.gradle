@@ -1,0 +1,56 @@
+plugins {
+    id "com.android.application"
+}
+
+android {
+    namespace "app.meshwarden.android"
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "app.meshwarden.android"
+        minSdk 24
+        targetSdk 34
+        versionCode 1
+        versionName "1.0.0"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    signingConfigs {
+        release {
+            def store = System.getenv("MESH_KEYSTORE")
+            if (store != null) {
+                storeFile file(store)
+                storePassword System.getenv("MESH_STORE_PASS")
+                keyAlias "meshwarden"
+                keyPassword System.getenv("MESH_KEY_PASS")
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            if (System.getenv("MESH_KEYSTORE") != null) {
+                signingConfig signingConfigs.release
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation "androidx.appcompat:appcompat:1.7.0"
+    implementation "androidx.webkit:webkit:1.11.0"
+}
+
+configurations.configureEach {
+    resolutionStrategy.eachDependency { details ->
+        if (details.requested.group == "org.jetbrains.kotlin" && details.requested.name.startsWith("kotlin-stdlib")) {
+            details.useVersion "1.8.22"
+            details.because "Avoid duplicate classes from old kotlin-stdlib-jdk7/jdk8"
+        }
+    }
+}
