@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { Activity, KeyRound, Network, RefreshCw, ScrollText, Shield } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Activity, KeyRound, Network, Palette, RefreshCw, ScrollText, Shield } from "lucide-react";
 import { Toaster } from "sonner";
 import { Board } from "./board";
 import { ConnectView } from "./connect";
@@ -7,8 +7,10 @@ import { Inspector } from "./inspector";
 import { PolicyView } from "./policy";
 import { Topology } from "./topology";
 import { WatchView } from "./watch";
+import { Button } from "./ui";
 import { LAB_TAILNET, type ViewId } from "@/lib/mesh/types";
 import { useMesh } from "@/lib/mesh/store";
+import { PALETTES, applyPalette, readPalette, type PaletteId } from "@/lib/mesh/palette";
 
 const NAV: { id: ViewId; label: string; icon: typeof Activity }[] = [
   { id: "board", label: "Board", icon: Activity },
@@ -30,6 +32,12 @@ export function MeshApp() {
   const linkGeneration = useMesh((state) => state.linkGeneration);
   const pollSec = useMesh((state) => state.pollSec);
   const findings = useMesh((state) => state.findings);
+  const [palette, setPalette] = useState<PaletteId>("olive");
+  const [colorsOpen, setColorsOpen] = useState(false);
+
+  useEffect(() => {
+    setPalette(applyPalette(readPalette()));
+  }, []);
 
   useEffect(() => {
     const mesh = useMesh.getState();
@@ -83,7 +91,7 @@ export function MeshApp() {
   return (
     <div className="min-h-dvh">
       <Toaster
-        theme="dark"
+        theme={palette === "paper" ? "light" : "dark"}
         position="top-center"
         toastOptions={{
           style: {
@@ -110,6 +118,15 @@ export function MeshApp() {
           {mode === "live" && allowActions ? (
             <span className="rounded-md bg-accent/15 px-2 py-1 font-mono text-xs text-accent">Armed</span>
           ) : null}
+          <button
+            type="button"
+            className="grid size-11 place-items-center rounded-lg text-muted hover:bg-surface hover:text-fg"
+            aria-label="Colors"
+            aria-haspopup="dialog"
+            onClick={() => setColorsOpen(true)}
+          >
+            <Palette className="size-4" />
+          </button>
           <span className="rounded-md bg-surface px-2 py-1 font-mono text-xs text-muted">{mode === "lab" ? "Lab" : "Live"}</span>
           {mode === "live" ? (
             <button
@@ -164,6 +181,13 @@ export function MeshApp() {
           </button>
         ))}
       </nav>
+      {colorsOpen ? (
+        <ColorDialog
+          palette={palette}
+          onChoose={(id) => setPalette(applyPalette(id))}
+          onClose={() => setColorsOpen(false)}
+        />
+      ) : null}
     </div>
   );
 }
@@ -200,5 +224,71 @@ function Mark() {
       <circle cx="24" cy="10" r="1.7" fill="currentColor" />
       <circle cx="23" cy="23" r="1.7" fill="currentColor" />
     </svg>
+  );
+}
+
+function ColorDialog({
+  palette,
+  onChoose,
+  onClose,
+}: {
+  palette: PaletteId;
+  onChoose: (id: PaletteId) => void;
+  onClose: () => void;
+}) {
+  const ref = useRef<HTMLDialogElement>(null);
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    el.showModal();
+    const onCancel = (event: Event) => {
+      event.preventDefault();
+      onCloseRef.current();
+    };
+    el.addEventListener("cancel", onCancel);
+    return () => {
+      el.removeEventListener("cancel", onCancel);
+      if (el.open) el.close();
+    };
+  }, []);
+
+  return (
+    <dialog ref={ref} className="mesh-dialog" aria-labelledby="color-title">
+      <div className="flex flex-col gap-4 p-5">
+        <div className="flex flex-col gap-2">
+          <h2 id="color-title" className="text-lg font-semibold text-balance">
+            Colors
+          </h2>
+          <p className="text-sm text-pretty text-muted">
+            Saved on this device only. It does not change the tailnet, and it is not a credential.
+          </p>
+        </div>
+        <div className="flex flex-col gap-2">
+          {PALETTES.map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              aria-pressed={palette === item.id}
+              onClick={() => onChoose(item.id)}
+              className={`flex min-h-14 w-full items-center gap-3 rounded-lg border px-3 py-2 text-left ${palette === item.id ? "border-primary bg-surface-2" : "border-line bg-surface"}`}
+            >
+              <span className={`size-6 shrink-0 rounded-full border border-line swatch-${item.id}`} aria-hidden />
+              <span className="min-w-0">
+                <span className="block font-medium">{item.label}</span>
+                <span className="block text-xs text-muted">{item.hint}</span>
+              </span>
+            </button>
+          ))}
+        </div>
+        <div className="flex justify-end">
+          <Button tone="quiet" onClick={onClose}>
+            Close
+          </Button>
+        </div>
+      </div>
+    </dialog>
   );
 }

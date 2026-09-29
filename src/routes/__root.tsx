@@ -1,6 +1,7 @@
 import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-router";
 import { AuthProvider } from "@/lib/auth/provider";
 import { PreviewHostBridge } from "@/components/preview-host-bridge";
+import { PALETTE_BOOT } from "@/lib/mesh/palette";
 import appCss from "../styles.css?url";
 
 const APP_NAME = "Meshwarden";
@@ -28,6 +29,7 @@ export const Route = createRootRoute({
   component: () => (
     <html lang="en" className="antialiased" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: PALETTE_BOOT }} />
         <HeadContent />
       </head>
       <body className="bg-bg text-fg">

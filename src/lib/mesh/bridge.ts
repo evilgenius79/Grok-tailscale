@@ -23,6 +23,7 @@ declare global {
         authorization: string,
         contentType: string,
       ) => void;
+      setChrome?: (color: string) => void;
     };
     __meshDone?: (id: string, ok: boolean, status: number, payload: string) => void;
   }

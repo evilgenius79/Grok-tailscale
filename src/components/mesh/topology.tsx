@@ -110,7 +110,7 @@ export function Topology() {
         ))}
       </div>
       <p className="text-xs text-muted">
-        Green is quiet and up. Amber is a watch. Red is critical. Muted is off the control plane. Tap a machine to open it.
+        The filled mark is up. Amber is a watch. Red is critical. Gray is off the control plane. Tap a machine to open it.
       </p>
     </div>
   );

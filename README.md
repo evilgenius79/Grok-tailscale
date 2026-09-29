@@ -16,7 +16,7 @@ It is a web app. On Android, open it in Chrome and choose **Install app** or **A
 | Policy | The ACL file, MagicDNS, resolvers, and search paths, when the credential can read them |
 | Link | Stay in the lab, or hand over a live credential |
 
-Press `/` to jump to fleet search. Press Escape to close the inspector when no dialog is open.
+Press `/` to jump to fleet search. Press Escape to close the inspector when no dialog is open. The palette icon in the header switches Olive, Harbor, Ember, Violet, or Paper. That choice is stored on the device. It is not sent anywhere.
 
 Open a device for addresses, keys, routes, and control-plane latency. In the lab you also get CPU, memory, disk, and bandwidth. **Live mode does not invent those.** Tailscale’s device API does not return host CPU or interface counters, so those fields stay blank on a real tailnet.
 
@@ -77,7 +77,7 @@ The browser never calls `api.tailscale.com` itself. Server functions proxy a fix
 
 Anything else is rejected before a request is sent. `machineKey`, `nodeKey`, and `tailnetLockKey` are stripped before a device reaches the page. Error text is redacted so a token is not echoed back. Calls are capped per credential, and each upstream request times out after 15 seconds.
 
-The only browser storage is preferences: watchdog rules, poll interval, tailnet name, and whether you last picked a token or OAuth. Not the secret.
+The only browser storage is preferences: watchdog rules, poll interval, tailnet name, the color palette, and whether you last picked a token or OAuth. Not the secret.
 
 Prefer a read-only credential if you only want to watch. Tailscale’s OAuth scopes are documented in [OAuth clients](https://tailscale.com/kb/1215/oauth-clients). A watch-only client typically needs read scopes for devices, routes, DNS, and the policy file (`devices:core:read`, `devices:routes:read`, `dns:read`, `policy_file:read`). Grant write scopes only if you will arm actions, and confirm the names in the admin console — Tailscale owns that list, not this app.
 
@@ -110,7 +110,7 @@ The lab fleet and the finding rules are the source of truth for what the rehears
 
 ## Android
 
-Install the phone build from the [v1.0.1 release](https://github.com/evilgenius79/Grok-tailscale/releases/tag/v1.0.1): [Meshwarden.apk](https://github.com/evilgenius79/Grok-tailscale/releases/download/v1.0.1/Meshwarden.apk).
+Install the phone build from the [v1.0.2 release](https://github.com/evilgenius79/Grok-tailscale/releases/tag/v1.0.2): [Meshwarden.apk](https://github.com/evilgenius79/Grok-tailscale/releases/download/v1.0.2/Meshwarden.apk).
 
 That package does not use a Meshwarden server. Lab mode is inside the app and works with no network. Live mode calls `api.tailscale.com` from the phone. The credential stays in memory for that session and is not written to disk.
 

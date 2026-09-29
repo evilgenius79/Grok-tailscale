@@ -1,8 +1,10 @@
 package app.meshwarden.android;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Base64;
+import android.view.Window;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
@@ -10,6 +12,8 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.webkit.WebViewAssetLoader;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -89,6 +93,22 @@ public class MainActivity extends AppCompatActivity {
 
     private final class Bridge {
         @JavascriptInterface
+        public void setChrome(String color) {
+            if (color == null || !color.matches("#[0-9A-Fa-f]{6}")) return;
+            final int parsed = Color.parseColor(color);
+            double luminance = (0.2126 * Color.red(parsed) + 0.7152 * Color.green(parsed) + 0.0722 * Color.blue(parsed)) / 255d;
+            final boolean light = luminance > 0.6;
+            runOnUiThread(() -> {
+                Window window = getWindow();
+                window.setStatusBarColor(parsed);
+                window.setNavigationBarColor(parsed);
+                WindowInsetsControllerCompat controller = WindowCompat.getInsetsController(window, window.getDecorView());
+                controller.setAppearanceLightStatusBars(light);
+                controller.setAppearanceLightNavigationBars(light);
+            });
+        }
+
+        @JavascriptInterface
         public void request(String id, String method, String path, String body, String authorization, String contentType) {
             if (id == null || !ID.matcher(id).matches()) return;
             pool.execute(() -> {
@@ -105,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
                     conn.setRequestMethod(method);
                     conn.setRequestProperty("Authorization", authorization);
                     conn.setRequestProperty("Accept", "application/json");
-                    conn.setRequestProperty("User-Agent", "Meshwarden-Android/1.0");
+                    conn.setRequestProperty("User-Agent", "Meshwarden-Android/1.0.2");
                     if (body != null && !body.isEmpty()) {
                         byte[] bytes = body.getBytes(StandardCharsets.UTF_8);
                         conn.setDoOutput(true);
