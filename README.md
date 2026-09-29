@@ -110,11 +110,13 @@ The lab fleet and the finding rules are the source of truth for what the rehears
 
 ## Android
 
-The same dashboard can be installed on a phone without a Meshwarden server. Lab mode is inside the app and works with no network. Live mode calls `api.tailscale.com` from the phone. The credential stays in memory for that session and is not written to disk.
+Install the phone build from the [v1.0.0 release](https://github.com/evilgenius79/Grok-tailscale/releases/tag/v1.0.0): [Meshwarden.apk](https://github.com/evilgenius79/Grok-tailscale/releases/download/v1.0.0/Meshwarden.apk).
 
-It is not a Play Store app, and it is not the Tailscale VPN client. Android will warn that the package came from outside the store. Install only a copy you trust. If a later build is signed with a different key, uninstall this one before installing the new one.
+That package does not use a Meshwarden server. Lab mode is inside the app and works with no network. Live mode calls `api.tailscale.com` from the phone. The credential stays in memory for that session and is not written to disk.
 
-The installable package is produced from `android/` after `npm run build:android`. It is not committed here.
+It is not a Play Store app, and it is not the Tailscale VPN client. Android will warn that the package came from outside the store. Install only this copy. If a later build is signed with a different key, uninstall this one before installing the new one.
+
+The installable package is produced from `android/` after `npm run build:android`.
 
 - Not a coordination server, subnet router, or exit node.
 - Not a source of live host CPU, memory, or bandwidth. Those series exist so the lab inspector is worth looking at.
