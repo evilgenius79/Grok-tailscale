@@ -110,7 +110,7 @@ The lab fleet and the finding rules are the source of truth for what the rehears
 
 ## Android
 
-Install the phone build from the [v1.0.0 release](https://github.com/evilgenius79/Grok-tailscale/releases/tag/v1.0.0): [Meshwarden.apk](https://github.com/evilgenius79/Grok-tailscale/releases/download/v1.0.0/Meshwarden.apk).
+Install the phone build from the [v1.0.1 release](https://github.com/evilgenius79/Grok-tailscale/releases/tag/v1.0.1): [Meshwarden.apk](https://github.com/evilgenius79/Grok-tailscale/releases/download/v1.0.1/Meshwarden.apk).
 
 That package does not use a Meshwarden server. Lab mode is inside the app and works with no network. Live mode calls `api.tailscale.com` from the phone. The credential stays in memory for that session and is not written to disk.
 
