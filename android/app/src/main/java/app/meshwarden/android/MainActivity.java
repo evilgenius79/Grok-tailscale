@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
                     conn.setRequestMethod(method);
                     conn.setRequestProperty("Authorization", authorization);
                     conn.setRequestProperty("Accept", "application/json");
-                    conn.setRequestProperty("User-Agent", "Meshwarden-Android/1.0.2");
+                    conn.setRequestProperty("User-Agent", "Meshwarden-Android/1.0.3");
                     if (body != null && !body.isEmpty()) {
                         byte[] bytes = body.getBytes(StandardCharsets.UTF_8);
                         conn.setDoOutput(true);

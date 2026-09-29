@@ -11,7 +11,6 @@ It is a web app. On Android, open it in Chrome and choose **Install app** or **A
 | View | Purpose |
 | --- | --- |
 | Board | Health score, who is up, median DERP latency, a searchable fleet, and an incident log |
-| Map | The same devices, grouped by tag or owner |
 | Watchdog | Thresholds, and the findings those thresholds produce |
 | Policy | The ACL file, MagicDNS, resolvers, and search paths, when the credential can read them |
 | Link | Stay in the lab, or hand over a live credential |
@@ -21,8 +20,6 @@ Press `/` to jump to fleet search. Press Escape to close the inspector when no d
 Open a device for addresses, keys, routes, and control-plane latency. In the lab you also get CPU, memory, disk, and bandwidth. **Live mode does not invent those.** Tailscale’s device API does not return host CPU or interface counters, so those fields stay blank on a real tailnet.
 
 ![Device inspector](screenshots/inspector.png)
-
-![Topology map](screenshots/map.png)
 
 ## Two modes
 
@@ -102,7 +99,7 @@ npm run build
 ## Layout
 
 ```text
-src/components/mesh/   Board, map, inspector, watchdog, policy, link
+src/components/mesh/   Board, inspector, watchdog, policy, link
 src/lib/mesh/          Types, lab fleet, watchdog, Tailscale proxy, store
 ```
 
@@ -110,7 +107,7 @@ The lab fleet and the finding rules are the source of truth for what the rehears
 
 ## Android
 
-Install the phone build from the [v1.0.2 release](https://github.com/evilgenius79/Grok-tailscale/releases/tag/v1.0.2): [Meshwarden.apk](https://github.com/evilgenius79/Grok-tailscale/releases/download/v1.0.2/Meshwarden.apk).
+Install the phone build from the [v1.0.3 release](https://github.com/evilgenius79/Grok-tailscale/releases/tag/v1.0.3): [Meshwarden.apk](https://github.com/evilgenius79/Grok-tailscale/releases/download/v1.0.3/Meshwarden.apk).
 
 That package does not use a Meshwarden server. Lab mode is inside the app and works with no network. Live mode calls `api.tailscale.com` from the phone. The credential stays in memory for that session and is not written to disk.
 

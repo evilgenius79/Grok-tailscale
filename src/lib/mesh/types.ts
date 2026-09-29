@@ -1,6 +1,6 @@
 export type Severity = "info" | "watch" | "critical";
 
-export type ViewId = "board" | "map" | "watch" | "policy" | "link";
+export type ViewId = "board" | "watch" | "policy" | "link";
 
 export type FleetFilter = "all" | "up" | "down" | "routers" | "attention";
 

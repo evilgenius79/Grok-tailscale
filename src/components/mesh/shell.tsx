@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { Activity, KeyRound, Network, Palette, RefreshCw, ScrollText, Shield } from "lucide-react";
+import { Activity, KeyRound, Palette, RefreshCw, ScrollText, Shield } from "lucide-react";
 import { Toaster } from "sonner";
 import { Board } from "./board";
 import { ConnectView } from "./connect";
 import { Inspector } from "./inspector";
 import { PolicyView } from "./policy";
-import { Topology } from "./topology";
 import { WatchView } from "./watch";
 import { Button } from "./ui";
 import { LAB_TAILNET, type ViewId } from "@/lib/mesh/types";
@@ -14,7 +13,6 @@ import { PALETTES, applyPalette, readPalette, type PaletteId } from "@/lib/mesh/
 
 const NAV: { id: ViewId; label: string; icon: typeof Activity }[] = [
   { id: "board", label: "Board", icon: Activity },
-  { id: "map", label: "Map", icon: Network },
   { id: "watch", label: "Watchdog", icon: Shield },
   { id: "policy", label: "Policy", icon: ScrollText },
   { id: "link", label: "Link", icon: KeyRound },
@@ -149,7 +147,6 @@ export function MeshApp() {
         </nav>
         <main id="content" className="min-w-0 flex-1 px-3 py-4 pb-24 sm:px-5 lg:pb-6">
           {view === "board" ? <Board /> : null}
-          {view === "map" ? <Topology /> : null}
           {view === "watch" ? <WatchView /> : null}
           {view === "policy" ? <PolicyView /> : null}
           {view === "link" ? <ConnectView /> : null}
@@ -167,7 +164,7 @@ export function MeshApp() {
         </div>
       ) : null}
 
-      <nav aria-label="Sections" className="fixed inset-x-0 bottom-0 z-20 grid grid-cols-5 border-t border-line bg-bg/95 backdrop-blur lg:hidden">
+      <nav aria-label="Sections" className="fixed inset-x-0 bottom-0 z-20 grid grid-cols-4 border-t border-line bg-bg/95 backdrop-blur lg:hidden">
         {NAV.map((item) => (
           <button
             key={item.id}
